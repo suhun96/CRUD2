@@ -1,4 +1,3 @@
-
 import json
 
 from django.http import JsonResponse
@@ -8,7 +7,7 @@ from owners.models import Owner, Dog
 
 class OwnersView(View):
     def post(self, request):
-        data    =json.loads(request.body)
+        data=   json.loads(request.body)
         Owner.objects.create(            
                 name = data['name'], 
                 email = data['email'],
@@ -18,10 +17,10 @@ class OwnersView(View):
     
     def get(self, request):
         owners = Owner.objects.all()
-        results = []
-        dog_list = [] 
+        result = []
         for owner in owners:
             dogs = owner.dog_set.all()
+            dog_list = [] 
             for dog in dogs:
                 dog_list.append(
                     {
@@ -29,15 +28,15 @@ class OwnersView(View):
                         'age' : dog.age
                     }
                 )
-                results.append(
-                    {
-                        'name' : owner.name,
-                        'age' : owner.age,
-                        'email' : owner.email,
-                        'pet_list' : dog_list
-                    }
+            result.append(
+                {
+                    'name' : owner.name,
+                    'age' : owner.age,
+                    'email' : owner.email,
+                    'pet_list' : dog_list
+                }
                 )
-        return JsonResponse({'result':results}, status=201) 
+        return JsonResponse({'result':result}, status=200) 
     
 
 class DogsView(View):
