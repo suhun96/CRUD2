@@ -1,4 +1,5 @@
 import json
+from unittest import result
 
 from django.http import JsonResponse
 from django.views import View
@@ -16,26 +17,38 @@ class OwnersView(View):
         return JsonResponse({'massasge' : 'created'}, status=201)  
     
     def get(self, request):
-        owners = Owner.objects.all()
-        result = []
-        for owner in owners:
-            dogs = owner.dog_set.all()
-            dog_list = [] 
-            for dog in dogs:
-                dog_list.append(
-                    {
-                        'name' : dog.name,
-                        'age' : dog.age
-                    }
-                )
-            result.append(
-                {
-                    'name' : owner.name,
-                    'age' : owner.age,
-                    'email' : owner.email,
-                    'pet_list' : dog_list
-                }
-                )
+        # owners = Owner.objects.all()
+        # result = []
+        # for owner in owners:
+        #     dogs = owner.dog_set.all()
+        #     dog_list = [] 
+        #     for dog in dogs:
+        #         dog_list.append(
+        #             {
+        #                 'name' : dog.name,
+        #                 'age' : dog.age
+        #             }
+        #         )
+        #     result.append({
+        #             'name' : owner.name,
+        #             'age' : owner.age,
+        #             'email' : owner.email,
+        #             'pet_list' : dog_list
+        #         })
+        
+        result = [{
+            'name'     : owner.name,
+            'age'      : owner.age,
+            'email'    : owner.email,
+            'pet_list' : [{
+                'name' : dog.name,
+                'age' : dog.age
+                } for dog in owner.dog_set.all()]
+        } for owner in Owner.objects.all()]
+            
+            
+            
+            
         return JsonResponse({'result':result}, status=200) 
     
 

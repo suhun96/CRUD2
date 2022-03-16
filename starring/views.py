@@ -15,43 +15,38 @@ class MovieView(View):
        return JsonResponse({"massage":"created"} , status=201 )
    
    def get(self,request):
-        movies = Movie.objects.all()
-        movie_list = []
-        for movie in movies:
-            films = movie.actor.all()
-            film_list = []
-            for film in films:
-                film_list.append({
-                    "actor"     : film.first_name + film.last_name
-                })
-            movie_list.append({
-                "title"         : movie.title,
-                "running_time"  : movie.running_time,
-                "actor"         : film_list
-            })
-                
-               
-            
+        movie_list = [{
+            "title"         : movie.title,
+            "running_time"  : movie.running_time,
+            "actor"         : 
+                [actor.first_name + actor.last_name
+             for actor in movie.actors_movie.all()]
+            } for movie in Movie.objects.all()]
         return JsonResponse({"RESULT":movie_list}, status=200)
     
 
 class ActorView(View):
     def get(self, request):
-        actors = Actor.objects.all()
-        actor_list = []
-        for actor in actors:
-            movies = actor.movie.all()
-            movie_list = []
-            for movie in movies:
-                movie_list.append({
-                    "출연한 영화" : movie.title
-                })
+        
+        # actors = Actor.objects.all()
+        actor_list = [{
+            '이름'      : actor.first_name + actor.last_name,
+            '출연작'    : [movie.title for movie in actor.movies.all()]
+            } for actor in Actor.objects.all()]
+        
+        # for actor in actors:
+        #     movies = actor.movie.all()
+        #     movie_list = []
+        #     for movie in movies:
+        #         movie_list.append({
+        #             "출연한 영화" : movie.title
+        #         })
             
-            actor_list.append({
-                "성"    : actor.first_name,
-                "이름"  : actor.last_name,
-                "출연작": movie_list,
+        #     actor_list.append({
+        #         "성"    : actor.first_name,
+        #         "이름"  : actor.last_name,
+        #         "출연작": movie_list,
                 
-            })
+        #     })
         
         return JsonResponse({"결과" : actor_list})
