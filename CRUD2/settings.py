@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'owners',
     'starring',
     'django_extensions',
+    'book_author',
 ]
 
 MIDDLEWARE = [
