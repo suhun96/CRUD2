@@ -15,23 +15,26 @@ class MovieView(View):
        return JsonResponse({"massage":"created"} , status=201 )
    
    def get(self,request):
-        movies = Movie.objects.all()
-        movie_list = []
-        for movie in movies:
-            films = movie.actor.all()
-            film_list = []
-            for film in films:
-                film_list.append({
-                    "actor"     : film.first_name + film.last_name
-                })
-            movie_list.append({
-                "title"         : movie.title,
-                "running_time"  : movie.running_time,
-                "actor"         : film_list
-            })
-                
-               
-            
+        movie_list = [{
+            "title"         : movie.title,
+            "running_time"  : movie.running_time,
+            "actor"         : 
+                [
+                actor.first_name + actor.last_name
+             for actor in movie.actors_movie.all()]
+            } for movie in Movie.objects.all()]
+        # for movie in movies:
+        #     films = movie.a.all()
+        #     film_list = []
+        #     for film in films:
+        #         film_list.append({
+        #             "actor"     : film.first_name + film.last_name
+        #         })
+        #     movie_list.append({
+        #         "title"         : movie.title,
+        #         "running_time"  : movie.running_time,
+        #         "actor"         : film_list
+        #     })
         return JsonResponse({"RESULT":movie_list}, status=200)
     
 
