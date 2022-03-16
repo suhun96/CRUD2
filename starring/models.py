@@ -12,7 +12,6 @@ class Movie(models.Model):
     title        = models.CharField(max_length=45)
     release_date = models.DateField(auto_now=False,auto_now_add=False)
     running_time = models.IntegerField()
-    actor        = models.ManyToManyField("Actor", through="MovieActor", related_name="actors_movie")
     
     class Meta:
         db_table = "movies"
