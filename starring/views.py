@@ -34,19 +34,4 @@ class ActorView(View):
             '출연작'    : [movie.title for movie in actor.movies.all()]
             } for actor in Actor.objects.all()]
         
-        # for actor in actors:
-        #     movies = actor.movie.all()
-        #     movie_list = []
-        #     for movie in movies:
-        #         movie_list.append({
-        #             "출연한 영화" : movie.title
-        #         })
-            
-        #     actor_list.append({
-        #         "성"    : actor.first_name,
-        #         "이름"  : actor.last_name,
-        #         "출연작": movie_list,
-                
-        #     })
-        
         return JsonResponse({"결과" : actor_list})
